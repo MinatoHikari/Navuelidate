@@ -1,8 +1,10 @@
 {
     "name": "navuelidate",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "description": "a lib for create form and validate easier with naveui/vuelidate/vueuse",
-    "main": "index.js",
+    "main": "dist/index.umd.js",
+    "module": "dist/index.mjs",
+    "types": "dist/index.d.ts",
     "scripts": {
         "build": "vue-tsc --noEmit && vite build"
     },
