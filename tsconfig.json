@@ -1,0 +1,25 @@
+{
+    "compilerOptions": {
+        "baseUrl": ".",
+        "module": "ESNext",
+        "target": "esnext",
+        "lib": ["DOM", "ESNext"],
+        "strict": true,
+        "jsx": "preserve",
+        "esModuleInterop": true,
+        "skipLibCheck": true,
+        "moduleResolution": "node",
+        "resolveJsonModule": true,
+        "noUnusedLocals": false,
+        "strictNullChecks": true,
+        "forceConsistentCasingInFileNames": true,
+        "types": ["vite/client"],
+        "paths": {
+            "~/*": ["package/*"],
+            "treemate": ["node_modules/treemate/"],
+            "naive-ui": ["node_modules/naive-ui/"],
+            "vue": ["node_modules/vue/"]
+        }
+    },
+    "exclude": ["dist", "node_modules"]
+}

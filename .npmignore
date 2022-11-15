@@ -1,0 +1,14 @@
+.DS_Store
+*.local
+package
+node_modules
+.idea/
+.vscode/
+.fleet/
+*.log
+vite.config.ts
+tsconfig.json
+pnpm-lock.yaml
+.gitignore
+.npmignore
+.prettierrc.js
