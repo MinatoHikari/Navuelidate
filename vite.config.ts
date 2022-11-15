@@ -46,6 +46,8 @@ export default defineConfig({
             // options are passed on to @vue/babel-plugin-jsx
         }),
 
-        dts(),
+        dts({
+            tsConfigFilePath:'tsconfig.build.json'
+        }),
     ],
 });

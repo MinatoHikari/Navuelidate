@@ -3,6 +3,7 @@ import type { DefineComponent, PropType } from 'vue';
 import type { Validation, ValidationArgs } from '@vuelidate/core';
 import { useVuelidate } from '@vuelidate/core';
 import type { DatePickerProps } from 'naive-ui';
+import { NGrid, NFormItemGi } from 'naive-ui';
 import { computed, defineComponent, ref, watch, h } from 'vue';
 import type { FormItems, FormListItem } from '~/types';
 import { formItemMap, maybeNull } from '~/utils';
@@ -150,10 +151,10 @@ export default defineComponent({
         };
 
         return () => (
-            <n-grid x-gap={12}>
+            <NGrid x-gap={12}>
                 {list.value?.map((i) => {
                     return (
-                        <n-form-item-gi
+                        <NFormItemGi
                             validation-status={getValidateStatus(
                                 typeof i.modelValue === 'string'
                                     ? v$.value[i.modelValue]
@@ -172,10 +173,10 @@ export default defineComponent({
                                 },
                                 i.children,
                             )}
-                        </n-form-item-gi>
+                        </NFormItemGi>
                     );
                 })}
-            </n-grid>
+            </NGrid>
         );
     },
 });

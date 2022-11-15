@@ -15,7 +15,10 @@
         "forceConsistentCasingInFileNames": true,
         "types": ["vite/client"],
         "paths": {
-            "~/*": ["package/*"]
+            "~/*": ["package/*"],
+            "treemate": ["node_modules/treemate/"],
+            "naive-ui": ["node_modules/naive-ui/"],
+            "vue": ["node_modules/vue/"]
         }
     },
     "exclude": ["dist", "node_modules"]
