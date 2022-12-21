@@ -5,7 +5,7 @@ import { useVuelidate } from '@vuelidate/core';
 import type { DatePickerProps } from 'naive-ui';
 import { NGrid, NFormItemGi } from 'naive-ui';
 import { computed, defineComponent, ref, watch, h } from 'vue';
-import type { FormItems, FormListItem } from '~/types';
+import { FormItems, FormListItem, FormType } from '~/types';
 import { formItemMap, maybeNull } from '~/utils';
 
 export default defineComponent({
@@ -44,7 +44,6 @@ export default defineComponent({
         watch(
             formData,
             (val) => {
-                console.log(val);
                 c.emit('update:modelValue', val);
             },
             {
@@ -66,7 +65,7 @@ export default defineComponent({
         });
 
         const getValidateStatus = (validation: Validation | [Validation, Validation]) => {
-            let error: boolean | undefined = false;
+            let error: boolean | undefined;
             if (validation && validation.length) {
                 const arr = validation as [Validation, Validation];
                 error = arr[0]?.$error && arr[1]?.$error;
@@ -86,7 +85,7 @@ export default defineComponent({
         };
 
         const getUpdateEvent = (i: FormListItem<Record<string, unknown>, keyof FormItems>) => {
-            if (i.formType === 'input' && typeof i.modelValue !== 'string') {
+            if (i.formType === FormType.Input && typeof i.modelValue !== 'string') {
                 const arrVal = getArrVal(i);
                 return {
                     value: arrVal,
@@ -96,7 +95,7 @@ export default defineComponent({
                     },
                 };
             }
-            if (i.formType === 'date-picker') {
+            if (i.formType === FormType.DatePicker) {
                 const arrVal = getArrVal(i);
                 return {
                     formattedValue:
@@ -113,14 +112,13 @@ export default defineComponent({
                     },
                 };
             }
-            if (i.formType === 'checkbox-group') {
+            if (i.formType === FormType.CheckBoxGroup) {
                 return {
                     value: formData.value[i.modelValue as string],
                     'onUpdate:value': (
                         v: (string | number)[],
                         meta: { actionType: 'check' | 'uncheck'; value: string | number },
                     ) => {
-                        console.log(meta);
                         formData.value[i.modelValue as string] = v;
                     },
                 };
@@ -134,12 +132,12 @@ export default defineComponent({
         };
 
         const getCommonProps = (i: FormListItem<Record<string, unknown>, keyof FormItems>) => {
-            if (i.formType === 'input' && typeof i.modelValue !== 'string') {
+            if (i.formType === FormType.Input && typeof i.modelValue !== 'string') {
                 return {
                     separator: '-',
                 };
             }
-            if (i.formType === 'date-picker') {
+            if (i.formType === FormType.DatePicker) {
                 const res: DatePickerProps = {
                     valueFormat: 'yyyy-MM-dd',
                 };

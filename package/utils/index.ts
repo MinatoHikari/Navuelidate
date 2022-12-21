@@ -1,15 +1,25 @@
 import type { FormItems } from '~/types';
-import { NCheckboxGroup, NDatePicker, NInput, NInputNumber, NRadioGroup, NSelect } from 'naive-ui';
+import { FormType } from '~/types';
+import {
+    NCheckboxGroup,
+    NDatePicker,
+    NInput,
+    NInputNumber,
+    NRadioGroup,
+    NSelect,
+    NTreeSelect,
+} from 'naive-ui';
 import { ref, Ref } from 'vue';
 import { reactivePick, syncRef } from '@vueuse/core';
 
 export const formItemMap = new Map<keyof FormItems, FormItems[keyof FormItems]>([
-    ['input', NInput],
-    ['select', NSelect],
-    ['input-number', NInputNumber],
-    ['radio-group', NRadioGroup],
-    ['checkbox-group', NCheckboxGroup],
-    ['date-picker', NDatePicker],
+    [FormType.Input, NInput],
+    [FormType.Select, NSelect],
+    [FormType.TreeSelect, NTreeSelect],
+    [FormType.InputNumber, NInputNumber],
+    [FormType.RadioGroup, NRadioGroup],
+    [FormType.CheckBoxGroup, NCheckboxGroup],
+    [FormType.DatePicker, NDatePicker],
 ]);
 
 export const maybeNull = <T>(val?: T) => {
