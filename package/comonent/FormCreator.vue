@@ -1,12 +1,15 @@
 <script lang="tsx">
-import type { DefineComponent, PropType, VNode } from 'vue';
+import { DefineComponent, PropType, toRefs, VNode } from 'vue';
 import type { Validation, ValidationArgs } from '@vuelidate/core';
 import { useVuelidate } from '@vuelidate/core';
 import type { DatePickerProps } from 'naive-ui';
-import { NGrid, NFormItemGi } from 'naive-ui';
+import { NGrid, NFormItemGi, gridProps } from 'naive-ui';
 import { computed, defineComponent, ref, watch, h } from 'vue';
 import { FormItems, FormListItem, FormListItemRender, FormType } from '~/types';
 import { formItemMap, maybeNull } from '~/utils';
+import { reactivePick, toReactive } from '@vueuse/core';
+
+const gridPropKeys = Object.keys(gridProps);
 
 const conditionFormLIstItemFn = ({
     i,
@@ -26,8 +29,9 @@ const conditionFormLIstItemFn = ({
 
 export default defineComponent({
     name: 'FormCreator',
+    inheritAttrs: false,
     props: {
-        cols: Number,
+        ...gridProps,
         formList: Array as PropType<
             Array<FormListItem<never, keyof FormItems> | FormListItemRender>
         >,
@@ -179,15 +183,17 @@ export default defineComponent({
             }
         };
 
+        const gridPropReactive = reactivePick(p, ...(gridPropKeys as (keyof typeof gridProps)[]));
+
         return () => (
-            <NGrid x-gap={12}>
+            <NGrid x-gap={12} {...gridPropReactive} cols={p.cols ?? 4} {...c.attrs}>
                 {list.value?.map((listItem) => {
                     return conditionFormLIstItemFn({
                         i: listItem,
                         isRender: (i) => {
                             return (
                                 <NFormItemGi
-                                    span={i.span ?? 24 / (p.cols ?? 4)}
+                                    span={i.span ?? 1}
                                     label-placement="left"
                                     {...i.formItemGiProps}
                                 >
@@ -206,7 +212,7 @@ export default defineComponent({
                                                   v$.value[i.modelValue[1]],
                                               ],
                                     )}
-                                    span={i.span ?? 24 / (p.cols ?? 4)}
+                                    span={i.span ?? 1}
                                     label={i.label}
                                     label-placement="left"
                                     {...i.formItemGiProps}
