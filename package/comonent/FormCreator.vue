@@ -185,27 +185,32 @@ export default defineComponent({
                     return conditionFormLIstItemFn({
                         i: listItem,
                         isRender: (i) => i.render(),
-                        isFormListItem(i) {
-                            <NFormItemGi
-                                validation-status={getValidateStatus(
-                                    typeof i.modelValue === 'string'
-                                        ? v$.value[i.modelValue]
-                                        : [v$.value[i.modelValue[0]], v$.value[i.modelValue[1]]],
-                                )}
-                                span={i.span ?? 24 / (p.cols ?? 4)}
-                                label={i.label}
-                                label-placement="left"
-                            >
-                                {h(
-                                    formItemMap.get(i.formType) as unknown as DefineComponent,
-                                    {
-                                        ...getCommonProps(i),
-                                        ...getUpdateEvent(i),
-                                        ...i.props,
-                                    },
-                                    i.children,
-                                )}
-                            </NFormItemGi>;
+                        isFormListItem: (i) => {
+                            return (
+                                <NFormItemGi
+                                    validation-status={getValidateStatus(
+                                        typeof i.modelValue === 'string'
+                                            ? v$.value[i.modelValue]
+                                            : [
+                                                  v$.value[i.modelValue[0]],
+                                                  v$.value[i.modelValue[1]],
+                                              ],
+                                    )}
+                                    span={i.span ?? 24 / (p.cols ?? 4)}
+                                    label={i.label}
+                                    label-placement="left"
+                                >
+                                    {h(
+                                        formItemMap.get(i.formType) as unknown as DefineComponent,
+                                        {
+                                            ...getCommonProps(i),
+                                            ...getUpdateEvent(i),
+                                            ...i.props,
+                                        },
+                                        i.children,
+                                    )}
+                                </NFormItemGi>
+                            );
                         },
                     });
                 })}
