@@ -63,9 +63,9 @@ const formList = shallowRef([
 
 ## Component
 
-### Component <a id="FormCreator">FormCreator</a>
+### Component <a id="form-creator">FormCreator</a>
 
-组件用于生成 `naveui` 表单, 需配合 `useFormCreator` 使用
+组件用于生成 `naive-ui` 表单, 需配合 `useFormCreator` 使用
 
 | Props     | Type                                      | Default   | Description          |
 | --------- | ----------------------------------------- | --------- | -------------------- |
@@ -77,18 +77,18 @@ const formList = shallowRef([
 
 此外，可以接收 `NGrid` 组件的所有 props
 
-#### Type <a id="FormListItem">FormListItem</a>
+#### Type <a id="form-list-item">FormListItem</a>
 
-| Property        | Type                                      | Default        | Description                          |
-| --------------- | ----------------------------------------- | -------------- | ------------------------------------ |
-| label           | string                                    | ""             | 表单项的 `label`                     |
-| modelValue      | keyof T \| [keyof T, keyof T]             | undefined      | 必填，表单项的双向绑定变量           |
-| span            | number                                    | undefined      | 表单项占这一行的份额，最大 24 最小 1 |
-| formType        | FormType                                  | FormType.Input | 必填，表单项类型                     |
-| props           | InstanceType\<typeof formType\>['$props'] | undefined      | 对应表单类型的组件的 props           |
-| formItemGiProps | NFormItemGi 的 props                      | undefined      | 包裹表单控件的 NFormItemGi 的 props  |
+| Property        | Type                                      | Default        | Description                                                                              |
+| --------------- | ----------------------------------------- | -------------- | ---------------------------------------------------------------------------------------- |
+| label           | string                                    | ""             | 表单项的 `label`                                                                         |
+| modelValue      | keyof T \| [keyof T, keyof T]             | undefined      | 必填，表单项的双向绑定变量，T 泛型为传入的数据 Model 的类型 （默认是 defaultData的类型） |
+| span            | number                                    | undefined      | 表单项占这一行的份额，最大 24 最小 1                                                     |
+| formType        | FormType                                  | FormType.Input | 必填，表单项类型                                                                         |
+| props           | InstanceType\<typeof formType\>['$props'] | undefined      | 对应表单类型的组件的 props                                                               |
+| formItemGiProps | NFormItemGi 的 props                      | undefined      | 包裹表单控件的 NFormItemGi 的 props                                                      |
 
-#### Type <a id="FormListItemRender">FormListItemRender</a>
+#### Type <a id="form-list-item-render">FormListItemRender</a>
 
 | Property        | Type                 | Default   | Description                          |
 | --------------- | -------------------- | --------- | ------------------------------------ |
@@ -108,11 +108,11 @@ const formList = shallowRef([
 
 > ### Params
 
-| Property    | Type                              | Default   | Description                                |
-| ----------- | --------------------------------- | --------- | ------------------------------------------ |
-| defaultData | Record<string, unknown>           | undefined | 必填，表单默认值                           |
-| scope       | Symbol                            | undefined | 必填，表单域名标记，`Vuelidate` 的 `scope` |
-| rules       | Ref<Vargs extends ValidationArgs> | Vargs     | 表单验证规则                               |
+| Property    | Type                                | Default   | Description                                |
+| ----------- | ----------------------------------- | --------- | ------------------------------------------ |
+| defaultData | Record<string, unknown>             | undefined | 必填，表单默认值                           |
+| scope       | Symbol                              | undefined | 必填，表单域名标记，`Vuelidate` 的 `scope` |
+| rules       | Ref\<Vargs extends ValidationArgs\> | Vargs     | 表单验证规则                               |
 
 表单验证规则参考 [Vuelidate 文档](https://vuelidate-next.netlify.app)
 
@@ -134,11 +134,11 @@ const formList = shallowRef([
 | Property          | Type                              | Description                                                                                                                              |
 | ----------------- | --------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
 | { key, formType } | { key:string, formType:FormType } | 一个对象，包含 `key` ,`formType`, `key` 为表单数据对象 `formData.value` 的键名之一， 会由 ts 自动推导，formType 为目前支持的表单类型之一 |
-| config            | [`FormListItem`](#FormListItem)   | `FormListItem` 配置项，会根据第一个参数的 `formType` 自动收窄类型                                                                        |
+| config            | [`FormListItem`](#form-list-item) | `FormListItem` 配置项，会根据第一个参数的 `formType` 自动收窄类型                                                                        |
 
 > ### ReturnType
 
-[`FormListItem`](#FormListItem)
+[`FormListItem`](#form-list-item)
 
 ### Function `renderFormListItem`
 
@@ -146,11 +146,11 @@ const formList = shallowRef([
 
 > ### Params
 
-| Property | Type                                        | Description                 |
-| -------- | ------------------------------------------- | --------------------------- |
-| render   | () => VNode                                 | 自定义表单项渲染函数        |
-| config   | [`FormListItemRender`](#FormListItemRender) | `FormListItemRender` 配置项 |
+| Property | Type                                           | Description                 |
+| -------- | ---------------------------------------------- | --------------------------- |
+| render   | () => VNode                                    | 自定义表单项渲染函数        |
+| config   | [`FormListItemRender`](#form-list-item-render) | `FormListItemRender` 配置项 |
 
 > ### ReturnType
 
-[`FormListItemRender`](#FormListItemRender)
+[`FormListItemRender`](#form-list-item-render)
