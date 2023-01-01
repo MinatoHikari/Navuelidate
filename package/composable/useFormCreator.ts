@@ -115,7 +115,7 @@ export const useFormCreator = <
 
     const renderFormListItem = (
         render: () => VNode,
-        config: Omit<FormListItemRender, 'render'>,
+        config?: Omit<FormListItemRender, 'render'>,
     ): FormListItemRender => {
         return {
             ...config,
