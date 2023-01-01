@@ -188,7 +188,6 @@ export default defineComponent({
                             return (
                                 <NFormItemGi
                                     span={i.span ?? 24 / (p.cols ?? 4)}
-                                    label={i.label}
                                     label-placement="left"
                                     {...i.formItemGiProps}
                                 >

@@ -31,8 +31,7 @@ export interface FormItems {
 }
 
 export interface FormListItemCommonConfig {
-    formItemGiProps: InstanceType<typeof NFormItemGi>['$props'];
-    label: string;
+    formItemGiProps?: InstanceType<typeof NFormItemGi>['$props'];
     span?: number;
 }
 
@@ -41,6 +40,7 @@ export interface FormListItem<
     P extends keyof FormItems = FormType.Input,
 > extends FormListItemCommonConfig {
     props?: InstanceType<FormItems[P]>['$props'];
+    label: string;
     formType: P;
     modelValue: keyof T | [keyof T, keyof T];
     children?: { [p: string]: any };
