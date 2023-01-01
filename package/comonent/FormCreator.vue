@@ -32,6 +32,14 @@ export default defineComponent({
     inheritAttrs: false,
     props: {
         ...gridProps,
+        xGap: {
+            type: gridProps.xGap.type,
+            default: 12,
+        },
+        cols: {
+            type: gridProps.cols.type,
+            default: 4,
+        },
         formList: Array as PropType<
             Array<FormListItem<never, keyof FormItems> | FormListItemRender>
         >,
@@ -186,7 +194,7 @@ export default defineComponent({
         const gridPropReactive = reactivePick(p, ...(gridPropKeys as (keyof typeof gridProps)[]));
 
         return () => (
-            <NGrid {...gridPropReactive} x-gap={p.xGap ?? 12} cols={p.cols ?? 4} {...c.attrs}>
+            <NGrid {...gridPropReactive} {...c.attrs}>
                 {list.value?.map((listItem) => {
                     return conditionFormLIstItemFn({
                         i: listItem,
