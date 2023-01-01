@@ -5,7 +5,7 @@ import { useVuelidate } from '@vuelidate/core';
 import type { DatePickerProps } from 'naive-ui';
 import { NGrid, NFormItemGi } from 'naive-ui';
 import { computed, defineComponent, ref, watch, h } from 'vue';
-import { FormItems, FormListItem, FormType } from '~/types';
+import { FormItems, FormListItem, FormListItemRender, FormType } from '~/types';
 import { formItemMap, maybeNull } from '~/utils';
 
 const conditionFormLIstItemFn = ({
@@ -13,12 +13,12 @@ const conditionFormLIstItemFn = ({
     isRender,
     isFormListItem,
 }: {
-    i: FormListItem<never, keyof FormItems> | { render: () => VNode };
-    isRender?: (i: { render: () => VNode }) => void | VNode;
+    i: FormListItem<never, keyof FormItems> | FormListItemRender;
+    isRender?: (i: FormListItemRender) => void | VNode;
     isFormListItem: (i: FormListItem<Record<string, unknown>, keyof FormItems>) => void | VNode;
 }) => {
-    if ((i as { render: () => VNode }).render) {
-        if (isRender) return isRender(i as { render: () => VNode });
+    if ((i as FormListItemRender).render) {
+        if (isRender) return isRender(i as FormListItemRender);
     } else {
         return isFormListItem(i as FormListItem<Record<string, unknown>, keyof FormItems>);
     }
@@ -29,7 +29,7 @@ export default defineComponent({
     props: {
         cols: Number,
         formList: Array as PropType<
-            Array<FormListItem<never, keyof FormItems> | { render: () => VNode }>
+            Array<FormListItem<never, keyof FormItems> | FormListItemRender>
         >,
         scope: {
             type: [String, Number, Symbol],
@@ -43,7 +43,7 @@ export default defineComponent({
         const list = computed(
             () =>
                 p.formList as Array<
-                    FormListItem<Record<string, unknown>, keyof FormItems> | { render: () => VNode }
+                    FormListItem<Record<string, unknown>, keyof FormItems> | FormListItemRender
                 >,
         );
         const setKeyVal = (
@@ -184,7 +184,18 @@ export default defineComponent({
                 {list.value?.map((listItem) => {
                     return conditionFormLIstItemFn({
                         i: listItem,
-                        isRender: (i) => i.render(),
+                        isRender: (i) => {
+                            return (
+                                <NFormItemGi
+                                    span={i.span ?? 24 / (p.cols ?? 4)}
+                                    label={i.label}
+                                    label-placement="left"
+                                    {...i.formItemGiProps}
+                                >
+                                    {i.render()}
+                                </NFormItemGi>
+                            );
+                        },
                         isFormListItem: (i) => {
                             return (
                                 <NFormItemGi
@@ -199,6 +210,7 @@ export default defineComponent({
                                     span={i.span ?? 24 / (p.cols ?? 4)}
                                     label={i.label}
                                     label-placement="left"
+                                    {...i.formItemGiProps}
                                 >
                                     {h(
                                         formItemMap.get(i.formType) as unknown as DefineComponent,

@@ -1,14 +1,14 @@
 import {
-    NCheckbox,
     NCheckboxGroup,
     NDatePicker,
     NInput,
     NInputNumber,
-    NRadio,
     NRadioGroup,
     NSelect,
     NTreeSelect,
+    NFormItemGi,
 } from 'naive-ui';
+import { VNode } from 'vue';
 
 export enum FormType {
     Input = 'input',
@@ -30,14 +30,22 @@ export interface FormItems {
     [FormType.DatePicker]: typeof NDatePicker;
 }
 
+export interface FormListItemCommonConfig {
+    formItemGiProps: InstanceType<typeof NFormItemGi>['$props'];
+    label: string;
+    span?: number;
+}
+
 export interface FormListItem<
     T extends Record<string, unknown> = {},
     P extends keyof FormItems = FormType.Input,
-> {
+> extends FormListItemCommonConfig {
     props?: InstanceType<FormItems[P]>['$props'];
-    label: string;
     formType: P;
     modelValue: keyof T | [keyof T, keyof T];
-    span?: number;
     children?: { [p: string]: any };
+}
+
+export interface FormListItemRender extends FormListItemCommonConfig {
+    render: () => VNode;
 }

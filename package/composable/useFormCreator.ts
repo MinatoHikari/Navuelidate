@@ -2,7 +2,7 @@ import { CheckboxProps, NCheckbox, NRadio, RadioProps } from 'naive-ui';
 import type { Validation, ValidationArgs } from '@vuelidate/core';
 import { useVuelidate } from '@vuelidate/core';
 import type { Ref, VNode } from 'vue';
-import { FormItems, FormListItem, FormType } from '~/types';
+import { FormItems, FormListItem, FormListItemRender, FormType } from '~/types';
 import { ref, h } from 'vue';
 import { syncData } from '~/utils';
 
@@ -113,8 +113,12 @@ export const useFormCreator = <
         });
     }
 
-    const renderFormListItem = (render: () => VNode) => {
+    const renderFormListItem = (
+        render: () => VNode,
+        config: Omit<FormListItemRender, 'render'>,
+    ): FormListItemRender => {
         return {
+            ...config,
             render,
         };
     };
