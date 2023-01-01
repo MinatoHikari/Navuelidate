@@ -186,7 +186,7 @@ export default defineComponent({
         const gridPropReactive = reactivePick(p, ...(gridPropKeys as (keyof typeof gridProps)[]));
 
         return () => (
-            <NGrid x-gap={12} {...gridPropReactive} cols={p.cols ?? 4} {...c.attrs}>
+            <NGrid {...gridPropReactive} x-gap={p.xGap ?? 12} cols={p.cols ?? 4} {...c.attrs}>
                 {list.value?.map((listItem) => {
                     return conditionFormLIstItemFn({
                         i: listItem,
