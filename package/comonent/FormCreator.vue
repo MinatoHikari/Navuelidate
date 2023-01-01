@@ -1,5 +1,5 @@
 <script lang="tsx">
-import type { DefineComponent, PropType } from 'vue';
+import type { DefineComponent, PropType, VNode } from 'vue';
 import type { Validation, ValidationArgs } from '@vuelidate/core';
 import { useVuelidate } from '@vuelidate/core';
 import type { DatePickerProps } from 'naive-ui';
@@ -8,11 +8,29 @@ import { computed, defineComponent, ref, watch, h } from 'vue';
 import { FormItems, FormListItem, FormType } from '~/types';
 import { formItemMap, maybeNull } from '~/utils';
 
+const conditionFormLIstItemFn = ({
+    i,
+    isRender,
+    isFormListItem,
+}: {
+    i: FormListItem<never, keyof FormItems> | { render: () => VNode };
+    isRender?: (i: { render: () => VNode }) => void | VNode;
+    isFormListItem: (i: FormListItem<Record<string, unknown>, keyof FormItems>) => void | VNode;
+}) => {
+    if ((i as { render: () => VNode }).render) {
+        if (isRender) return isRender(i as { render: () => VNode });
+    } else {
+        return isFormListItem(i as FormListItem<Record<string, unknown>, keyof FormItems>);
+    }
+};
+
 export default defineComponent({
     name: 'FormCreator',
     props: {
         cols: Number,
-        formList: Array as PropType<Array<FormListItem<never, keyof FormItems>>>,
+        formList: Array as PropType<
+            Array<FormListItem<never, keyof FormItems> | { render: () => VNode }>
+        >,
         scope: {
             type: [String, Number, Symbol],
         },
@@ -23,7 +41,10 @@ export default defineComponent({
     setup(p, c) {
         const defaultVal = {} as Record<string, unknown>;
         const list = computed(
-            () => p.formList as Array<FormListItem<Record<string, unknown>, keyof FormItems>>,
+            () =>
+                p.formList as Array<
+                    FormListItem<Record<string, unknown>, keyof FormItems> | { render: () => VNode }
+                >,
         );
         const setKeyVal = (
             obj: Record<string, unknown>,
@@ -36,8 +57,13 @@ export default defineComponent({
                 obj[i.modelValue[1]] = p.modelValue ? p.modelValue[i.modelValue[1]] : undefined;
             }
         };
-        (list.value || []).forEach((i) => {
-            setKeyVal(defaultVal, i);
+        (list.value || []).forEach((item) => {
+            conditionFormLIstItemFn({
+                i: item,
+                isFormListItem: (i) => {
+                    setKeyVal(defaultVal, i);
+                },
+            });
         });
         const formData = ref<Record<string, unknown>>(defaultVal);
         // <-- 监听表单值变化，向父组件传递变化
@@ -54,8 +80,13 @@ export default defineComponent({
             () => p.modelValue,
             (val) => {
                 if (val)
-                    (list.value || []).forEach((i) => {
-                        setKeyVal(formData.value, i);
+                    (list.value || []).forEach((item) => {
+                        conditionFormLIstItemFn({
+                            i: item,
+                            isFormListItem: (i) => {
+                                setKeyVal(formData.value, i);
+                            },
+                        });
                     });
             },
         );
@@ -150,29 +181,33 @@ export default defineComponent({
 
         return () => (
             <NGrid x-gap={12}>
-                {list.value?.map((i) => {
-                    return (
-                        <NFormItemGi
-                            validation-status={getValidateStatus(
-                                typeof i.modelValue === 'string'
-                                    ? v$.value[i.modelValue]
-                                    : [v$.value[i.modelValue[0]], v$.value[i.modelValue[1]]],
-                            )}
-                            span={i.span ?? 24 / (p.cols ?? 4)}
-                            label={i.label}
-                            label-placement="left"
-                        >
-                            {h(
-                                formItemMap.get(i.formType) as unknown as DefineComponent,
-                                {
-                                    ...getCommonProps(i),
-                                    ...getUpdateEvent(i),
-                                    ...i.props,
-                                },
-                                i.children,
-                            )}
-                        </NFormItemGi>
-                    );
+                {list.value?.map((listItem) => {
+                    return conditionFormLIstItemFn({
+                        i: listItem,
+                        isRender: (i) => i.render(),
+                        isFormListItem(i) {
+                            <NFormItemGi
+                                validation-status={getValidateStatus(
+                                    typeof i.modelValue === 'string'
+                                        ? v$.value[i.modelValue]
+                                        : [v$.value[i.modelValue[0]], v$.value[i.modelValue[1]]],
+                                )}
+                                span={i.span ?? 24 / (p.cols ?? 4)}
+                                label={i.label}
+                                label-placement="left"
+                            >
+                                {h(
+                                    formItemMap.get(i.formType) as unknown as DefineComponent,
+                                    {
+                                        ...getCommonProps(i),
+                                        ...getUpdateEvent(i),
+                                        ...i.props,
+                                    },
+                                    i.children,
+                                )}
+                            </NFormItemGi>;
+                        },
+                    });
                 })}
             </NGrid>
         );
