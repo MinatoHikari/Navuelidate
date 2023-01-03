@@ -1,10 +1,11 @@
-import { CheckboxProps, NCheckbox, NRadio, RadioProps } from 'naive-ui';
+import { CheckboxProps, NCheckbox, NRadio, RadioProps, FormItemGiProps } from 'naive-ui';
 import type { Validation, ValidationArgs } from '@vuelidate/core';
 import { useVuelidate } from '@vuelidate/core';
 import type { Ref, VNode } from 'vue';
 import { FormItems, FormListItem, FormListItemRender, FormType } from '~/types';
 import { ref, h } from 'vue';
 import { syncData } from '~/utils';
+import { resolveUnref } from '@vueuse/core';
 
 const createFormListConfig = <T extends Record<string, unknown>, P extends keyof FormItems>(
     key: keyof T | [keyof T, keyof T],
@@ -43,6 +44,7 @@ export const useFormCreator = <
     defaultData: T;
     scope: symbol | string | number;
     rules?: Ref<Vargs> | Vargs;
+    globalFormItemGiProps?: FormItemGiProps | (() => FormItemGiProps) | Ref<FormItemGiProps>;
 }) => {
     const formData = ref({ ...config.defaultData });
 
@@ -55,6 +57,8 @@ export const useFormCreator = <
         syncData(formData, r);
         v$.value.$reset();
     };
+
+    const { globalFormItemGiProps } = config;
 
     function createFormListItem(
         { key, formType }: { key: keyof T; formType: FormType.RadioGroup },
@@ -107,6 +111,12 @@ export const useFormCreator = <
         { key, formType }: { key: keyof T | [keyof T, keyof T]; formType: P },
         config: Omit<FormListItem<T, P>, ExcludeKeys>,
     ): FormListItem<T, P> {
+        if (globalFormItemGiProps) {
+            config.formItemGiProps = {
+                ...resolveUnref(globalFormItemGiProps),
+                ...config.formItemGiProps,
+            };
+        }
         return createFormListConfig<T, P>(key, {
             ...config,
             formType,
@@ -117,6 +127,12 @@ export const useFormCreator = <
         render: () => VNode,
         config?: Omit<FormListItemRender, 'render'>,
     ): FormListItemRender => {
+        if (config && globalFormItemGiProps) {
+            config.formItemGiProps = {
+                ...resolveUnref(globalFormItemGiProps),
+                ...config.formItemGiProps,
+            };
+        }
         return {
             ...config,
             render,

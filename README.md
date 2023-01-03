@@ -82,7 +82,7 @@ const formList = shallowRef([
 | Property        | Type                                      | Default        | Description                                                                              |
 | --------------- | ----------------------------------------- | -------------- | ---------------------------------------------------------------------------------------- |
 | label           | string                                    | ""             | 表单项的 `label`                                                                         |
-| modelValue      | keyof T \| [keyof T, keyof T]             | undefined      | 必填，表单项的双向绑定变量，T 泛型为传入的数据 Model 的类型 （默认是 defaultData的类型） |
+| modelValue      | keyof Data \| [keyof Data, keyof Data]    | undefined      | 必填，表单项的双向绑定变量，T 泛型为传入的数据 Model 的类型 （默认是 defaultData的类型） |
 | span            | number                                    | undefined      | 表单项占这一行的份额，最大 24 最小 1                                                     |
 | formType        | FormType                                  | FormType.Input | 必填，表单项类型                                                                         |
 | props           | InstanceType\<typeof formType\>['$props'] | undefined      | 对应表单类型的组件的 props                                                               |
@@ -108,11 +108,12 @@ const formList = shallowRef([
 
 > ### Params
 
-| Property    | Type                                | Default   | Description                                |
-| ----------- | ----------------------------------- | --------- | ------------------------------------------ |
-| defaultData | Record<string, unknown>             | undefined | 必填，表单默认值                           |
-| scope       | Symbol                              | undefined | 必填，表单域名标记，`Vuelidate` 的 `scope` |
-| rules       | Ref\<Vargs extends ValidationArgs\> | Vargs     | 表单验证规则                               |
+| Property              | Type                                                                 | Default   | Description                                |
+| --------------------- | -------------------------------------------------------------------- | --------- | ------------------------------------------ |
+| defaultData           | Record<string, unknown>                                              | undefined | 必填，表单默认值                           |
+| scope                 | Symbol                                                               | undefined | 必填，表单域名标记，`Vuelidate` 的 `scope` |
+| rules                 | Ref\<Vargs extends ValidationArgs\>                                  | Vargs     | 表单验证规则                               |
+| globalFormItemGiProps | FormItemGiProps \| (() => FormItemGiProps) \| Ref\<FormItemGiProps\> | undefined | 全局给表单项的 FormItemGi 传递的 props     |
 
 表单验证规则参考 [Vuelidate 文档](https://vuelidate-next.netlify.app)
 
