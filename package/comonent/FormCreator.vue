@@ -65,7 +65,7 @@ export default defineComponent({
             if (typeof i.modelValue === 'string')
                 obj[i.modelValue] = p.modelValue ? p.modelValue[i.modelValue] : undefined;
             else {
-                obj[i.modelValue[1]] = p.modelValue ? p.modelValue[i.modelValue[1]] : undefined;
+                obj[i.modelValue[0]] = p.modelValue ? p.modelValue[i.modelValue[0]] : undefined;
                 obj[i.modelValue[1]] = p.modelValue ? p.modelValue[i.modelValue[1]] : undefined;
             }
         };
