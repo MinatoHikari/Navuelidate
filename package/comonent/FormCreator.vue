@@ -192,12 +192,18 @@ export default defineComponent({
         };
 
         const getFeedBack = (i: FormListItem<Record<string, unknown>, keyof FormItems>) => {
+            if (!v$.value) return '';
+            if (!v$.value.$anyDirty) return '';
             if (typeof i.modelValue === 'string') {
-                const errors = (v$.value[i.modelValue] as Validation).$errors;
+                const validationItem = v$.value[i.modelValue] as Validation;
+                if (!validationItem) return '';
+                const errors = validationItem?.$errors ?? [];
                 return errors[0] ? unref(errors[0].$message) : '';
             } else {
-                const errors0 = (v$.value[i.modelValue[0]] as Validation).$errors;
-                const errors1 = (v$.value[i.modelValue[1]] as Validation).$errors;
+                const validationItem0 = v$.value[i.modelValue[0]] as Validation;
+                const validationItem1 = v$.value[i.modelValue[1]] as Validation;
+                const errors0 = validationItem0?.$errors ?? [];
+                const errors1 = validationItem1?.$errors ?? [];
                 if (errors0[0]) return unref(errors0[0].$message);
                 else if (errors1[0]) return unref(errors1[0].$message);
                 else return '';
