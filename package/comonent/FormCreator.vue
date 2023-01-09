@@ -1,5 +1,5 @@
 <script lang="tsx">
-import { DefineComponent, PropType, toRefs, VNode } from 'vue';
+import { DefineComponent, PropType, toRefs, unref, VNode } from 'vue';
 import type { Validation, ValidationArgs } from '@vuelidate/core';
 import { useVuelidate } from '@vuelidate/core';
 import type { DatePickerProps } from 'naive-ui';
@@ -191,6 +191,19 @@ export default defineComponent({
             }
         };
 
+        const getFeedBack = (i: FormListItem<Record<string, unknown>, keyof FormItems>) => {
+            if (typeof i.modelValue === 'string') {
+                const errors = (v$.value[i.modelValue] as Validation).$errors;
+                return errors[0] ? unref(errors[0].$message) : '';
+            } else {
+                const errors0 = (v$.value[i.modelValue[0]] as Validation).$errors;
+                const errors1 = (v$.value[i.modelValue[1]] as Validation).$errors;
+                if (errors0[0]) return unref(errors0[0].$message);
+                else if (errors1[0]) return unref(errors1[0].$message);
+                else return '';
+            }
+        };
+
         const gridPropReactive = reactivePick(p, ...(gridPropKeys as (keyof typeof gridProps)[]));
 
         return () => (
@@ -203,6 +216,7 @@ export default defineComponent({
                                 <NFormItemGi
                                     span={i.span ?? 1}
                                     label-placement="left"
+                                    label-align="left"
                                     {...i.formItemGiProps}
                                 >
                                     {i.render()}
@@ -220,6 +234,8 @@ export default defineComponent({
                                                   v$.value[i.modelValue[1]],
                                               ],
                                     )}
+                                    feedback={getFeedBack(i)}
+                                    label-align="left"
                                     span={i.span ?? 1}
                                     label={i.label}
                                     label-placement="left"

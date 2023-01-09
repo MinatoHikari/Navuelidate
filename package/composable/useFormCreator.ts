@@ -7,6 +7,16 @@ import { ref, h } from 'vue';
 import { syncData } from '~/utils';
 import { resolveUnref } from '@vueuse/core';
 
+export type DefaultSettings = {
+    formItemGiProps?: FormItemGiProps | (() => FormItemGiProps) | Ref<FormItemGiProps>;
+};
+
+let defaultSettings: DefaultSettings = {};
+
+export const createDefaultSettings = (config: DefaultSettings) => {
+    defaultSettings = config;
+};
+
 const createFormListConfig = <T extends Record<string, unknown>, P extends keyof FormItems>(
     key: keyof T | [keyof T, keyof T],
     config: Partial<FormListItem<T, P> & { options: { label: string; value: string }[] }>,
@@ -58,6 +68,7 @@ export const useFormCreator = <
         v$.value.$reset();
     };
 
+    const { formItemGiProps: defaultFormItemGiProps } = defaultSettings;
     const { globalFormItemGiProps } = config;
 
     function createFormListItem(
@@ -113,6 +124,7 @@ export const useFormCreator = <
     ): FormListItem<T, P> {
         if (globalFormItemGiProps) {
             config.formItemGiProps = {
+                ...resolveUnref(defaultFormItemGiProps),
                 ...resolveUnref(globalFormItemGiProps),
                 ...config.formItemGiProps,
             };
@@ -129,6 +141,7 @@ export const useFormCreator = <
     ): FormListItemRender => {
         if (config && globalFormItemGiProps) {
             config.formItemGiProps = {
+                ...resolveUnref(defaultFormItemGiProps),
                 ...resolveUnref(globalFormItemGiProps),
                 ...config.formItemGiProps,
             };
