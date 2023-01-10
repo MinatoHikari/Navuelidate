@@ -7,6 +7,7 @@ import {
     NSelect,
     NTreeSelect,
     NFormItemGi,
+    NCascader,
 } from 'naive-ui';
 import { VNode } from 'vue';
 
@@ -18,6 +19,7 @@ export enum FormType {
     RadioGroup = 'radio-group',
     CheckBoxGroup = 'checkbox-group',
     DatePicker = 'date-picker',
+    Cascader = 'cascader',
 }
 
 export interface FormItems {
@@ -28,6 +30,7 @@ export interface FormItems {
     [FormType.RadioGroup]: typeof NRadioGroup;
     [FormType.CheckBoxGroup]: typeof NCheckboxGroup;
     [FormType.DatePicker]: typeof NDatePicker;
+    [FormType.Cascader]: typeof NCascader;
 }
 
 export interface FormListItemCommonConfig {
