@@ -96,7 +96,7 @@ const formList = shallowRef([
 | render          | () => VNode          | undefined | 自定义渲染函数                       |
 | formItemGiProps | NFormItemGi 的 props | undefined | 包裹表单控件的 NFormItemGi 的 props  |
 
-目前支持的 `formType` 组件: `[Input,Select,TreeSelect,InputNumber, RadioGroup,CheckBoxGroup,DatePicker]`
+目前支持的 `formType` 组件: `[Input,Select,TreeSelect,InputNumber, RadioGroup,CheckBoxGroup,DatePicker,NCascader]`
 
 对应的组件 `props` 可参考 [naive-ui 文档](https://www.naiveui.com/zh-CN/os-theme)
 
@@ -132,10 +132,10 @@ const formList = shallowRef([
 
 > ### Params
 
-| Property          | Type                              | Description                                                                                                                              |
-| ----------------- | --------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
-| { key, formType } | { key:string, formType:FormType } | 一个对象，包含 `key` ,`formType`, `key` 为表单数据对象 `formData.value` 的键名之一， 会由 ts 自动推导，formType 为目前支持的表单类型之一 |
-| config            | [`FormListItem`](#form-list-item) | `FormListItem` 配置项，会根据第一个参数的 `formType` 自动收窄类型                                                                        |
+| Property          | Type                                                                       | Description                                                                                                                              |
+| ----------------- | -------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| { key, formType } | { key: string                     \| [string,string], formType: FormType } | 一个对象，包含 `key` ,`formType`, `key` 为表单数据对象 `formData.value` 的键名之一， 会由 ts 自动推导，formType 为目前支持的表单类型之一 |
+| config            | [`FormListItem`](#form-list-item)                                          | `FormListItem` 配置项，会根据第一个参数的 `formType` 自动收窄类型                                                                        |
 
 > ### ReturnType
 

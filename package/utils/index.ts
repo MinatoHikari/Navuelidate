@@ -8,6 +8,7 @@ import {
     NRadioGroup,
     NSelect,
     NTreeSelect,
+    NCascader,
 } from 'naive-ui';
 import { ref, Ref } from 'vue';
 import { reactivePick, syncRef } from '@vueuse/core';
@@ -20,6 +21,7 @@ export const formItemMap = new Map<keyof FormItems, FormItems[keyof FormItems]>(
     [FormType.RadioGroup, NRadioGroup],
     [FormType.CheckBoxGroup, NCheckboxGroup],
     [FormType.DatePicker, NDatePicker],
+    [FormType.Cascader, NCascader],
 ]);
 
 export const maybeNull = <T>(val?: T) => {
