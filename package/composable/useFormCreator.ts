@@ -23,7 +23,8 @@ const createFormListConfig = <T extends Record<string, unknown>, P extends keyof
 ) => {
     config.modelValue = key;
     if (config.formType === FormType.RadioGroup) {
-        config.children = {
+        config.slots = {
+            ...config.slots,
             default: () =>
                 (config.options || []).map((i) =>
                     h(NRadio, {
@@ -33,7 +34,8 @@ const createFormListConfig = <T extends Record<string, unknown>, P extends keyof
         };
     }
     if (config.formType === FormType.CheckBoxGroup) {
-        config.children = {
+        config.slots = {
+            ...config.slots,
             default: () =>
                 (config.options || []).map((i) =>
                     h(NCheckbox, {

@@ -34,7 +34,7 @@ export default defineComponent({
         ...gridProps,
         xGap: {
             type: gridProps.xGap.type,
-            default: 12,
+            default: 18,
         },
         cols: {
             type: gridProps.cols.type,
@@ -254,7 +254,7 @@ export default defineComponent({
                                             ...getUpdateEvent(i),
                                             ...i.props,
                                         },
-                                        i.children,
+                                        i.slots,
                                     )}
                                 </NFormItemGi>
                             );
