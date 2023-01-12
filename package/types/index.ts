@@ -9,7 +9,7 @@ import {
     NFormItemGi,
     NCascader,
 } from 'naive-ui';
-import { VNode, Slots } from 'vue';
+import { VNode, Slots, VNodeArrayChildren } from 'vue';
 
 export enum FormType {
     Input = 'input',
@@ -38,6 +38,13 @@ export interface FormListItemCommonConfig {
     span?: number;
 }
 
+export type RawChildren = string | number | boolean | VNode | VNodeArrayChildren | (() => any);
+
+export type RawSlots = {
+    [name: string]: unknown;
+    $stable?: boolean;
+};
+
 export interface FormListItem<
     T extends Record<string, unknown> = {},
     P extends keyof FormItems = FormType.Input,
@@ -46,7 +53,7 @@ export interface FormListItem<
     label: string;
     formType: P;
     modelValue: keyof T | [keyof T, keyof T];
-    slots?: Slots;
+    slots?: RawSlots;
 }
 
 export interface FormListItemRender extends FormListItemCommonConfig {
