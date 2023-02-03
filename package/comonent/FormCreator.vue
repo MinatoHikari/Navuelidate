@@ -132,9 +132,14 @@ export default defineComponent({
                 const arrVal = getArrVal(i);
                 return {
                     value: arrVal,
-                    'onUpdate:value': (v: string | [string, string]) => {
-                        formData.value[i.modelValue[0]] = v[0] ?? null;
-                        formData.value[i.modelValue[1]] = v[1] ?? null;
+                    'onUpdate:value': (v: [string, string] | null) => {
+                        if (v === null) {
+                            formData.value[i.modelValue[0]] = null;
+                            formData.value[i.modelValue[1]] = null;
+                        } else {
+                            formData.value[i.modelValue[0]] = v[0] ?? null;
+                            formData.value[i.modelValue[1]] = v[1] ?? null;
+                        }
                     },
                 };
             }
@@ -145,9 +150,12 @@ export default defineComponent({
                         typeof i.modelValue === 'string'
                             ? maybeNull(formData.value[i.modelValue])
                             : arrVal,
-                    'onUpdate:formatted-value': (v: string | [string, string]) => {
+                    'onUpdate:formatted-value': (v: string | [string, string] | null) => {
                         if (typeof i.modelValue === 'string') {
                             formData.value[i.modelValue] = v;
+                        } else if (v === null) {
+                            formData.value[i.modelValue[0]] = null;
+                            formData.value[i.modelValue[1]] = null;
                         } else {
                             formData.value[i.modelValue[0]] = v[0] ?? null;
                             formData.value[i.modelValue[1]] = v[1] ?? null;
