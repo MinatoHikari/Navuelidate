@@ -101,6 +101,9 @@ export default defineComponent({
                         });
                     });
             },
+            {
+                deep: true,
+            },
         );
         // -->
         const v$ = useVuelidate(p.rules ?? {}, formData, {
