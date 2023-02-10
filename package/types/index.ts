@@ -39,8 +39,8 @@ export interface FormListItemCommonConfig {
     formItemGiSlots?: {
         feedback?: () => VNodeChild;
         label?: () => VNodeChild;
-        suffix: () => VNodeChild;
-        prefix: () => VNodeChild;
+        suffix?: () => VNodeChild;
+        prefix?: () => VNodeChild;
     };
     span?: number;
 }

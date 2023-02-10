@@ -241,6 +241,7 @@ export default defineComponent({
                             );
                         },
                         isFormListItem: (i) => {
+                            const { prefix, suffix, label, feedback } = i.formItemGiSlots ?? {};
                             return (
                                 <NFormItemGi
                                     validation-status={getValidateStatus(
@@ -262,8 +263,7 @@ export default defineComponent({
                                         default: () => {
                                             return (
                                                 <>
-                                                    {i.formItemGiSlots &&
-                                                        i.formItemGiSlots.prefix()}
+                                                    {prefix && prefix()}
                                                     {h(
                                                         formItemMap.get(
                                                             i.formType,
@@ -275,13 +275,12 @@ export default defineComponent({
                                                         },
                                                         i.slots,
                                                     )}
-                                                    {i.formItemGiSlots &&
-                                                        i.formItemGiSlots.suffix()}
+                                                    {suffix && suffix()}
                                                 </>
                                             );
                                         },
-                                        label: i.formItemGiSlots?.label,
-                                        feedback: i.formItemGiProps?.feedback,
+                                        label,
+                                        feedback,
                                     }}
                                 </NFormItemGi>
                             );
