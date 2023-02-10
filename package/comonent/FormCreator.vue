@@ -258,15 +258,31 @@ export default defineComponent({
                                     label-placement="left"
                                     {...i.formItemGiProps}
                                 >
-                                    {h(
-                                        formItemMap.get(i.formType) as unknown as DefineComponent,
-                                        {
-                                            ...getCommonProps(i),
-                                            ...getUpdateEvent(i),
-                                            ...i.props,
+                                    {{
+                                        default: () => {
+                                            return (
+                                                <>
+                                                    {i.formItemGiSlots &&
+                                                        i.formItemGiSlots.prefix()}
+                                                    {h(
+                                                        formItemMap.get(
+                                                            i.formType,
+                                                        ) as unknown as DefineComponent,
+                                                        {
+                                                            ...getCommonProps(i),
+                                                            ...getUpdateEvent(i),
+                                                            ...i.props,
+                                                        },
+                                                        i.slots,
+                                                    )}
+                                                    {i.formItemGiSlots &&
+                                                        i.formItemGiSlots.suffix()}
+                                                </>
+                                            );
                                         },
-                                        i.slots,
-                                    )}
+                                        label: i.formItemGiSlots?.label,
+                                        feedback: i.formItemGiProps?.feedback,
+                                    }}
                                 </NFormItemGi>
                             );
                         },
