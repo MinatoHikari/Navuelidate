@@ -79,14 +79,16 @@ const formList = shallowRef([
 
 #### Type <a id="form-list-item">FormListItem</a>
 
-| Property        | Type                                      | Default        | Description                                                                              |
-| --------------- | ----------------------------------------- | -------------- | ---------------------------------------------------------------------------------------- |
-| label           | string                                    | ""             | 表单项的 `label`                                                                         |
-| modelValue      | keyof Data \| [keyof Data, keyof Data]    | undefined      | 必填，表单项的双向绑定变量，T 泛型为传入的数据 Model 的类型 （默认是 defaultData的类型） |
-| span            | number                                    | undefined      | 表单项占这一行的份额，最大 24 最小 1                                                     |
-| formType        | FormType                                  | FormType.Input | 必填，表单项类型                                                                         |
-| props           | InstanceType\<typeof formType\>['$props'] | undefined      | 对应表单类型的组件的 props                                                               |
-| formItemGiProps | NFormItemGi 的 props                      | undefined      | 包裹表单控件的 NFormItemGi 的 props                                                      |
+| Property        | Type                                                                                           | Default        | Description                                                                                                                            |
+| --------------- | ---------------------------------------------------------------------------------------------- | -------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| label           | string                                                                                         | ""             | 表单项的 `label`                                                                                                                       |
+| modelValue      | keyof Data \| [keyof Data, keyof Data]                                                         | undefined      | 必填，表单项的双向绑定变量，T 泛型为传入的数据 Model 的类型 （默认是 defaultData的类型）                                               |
+| span            | number                                                                                         | undefined      | 表单项占这一行的份额，最大 24 最小 1                                                                                                   |
+| formType        | FormType                                                                                       | FormType.Input | 必填，表单项类型                                                                                                                       |
+| props           | InstanceType\<typeof formType\>['$props']                                                      | undefined      | 对应表单类型的组件的 props                                                                                                             |
+| slots           | 所使用的 naive-ui 表单项的slots                                                                | undefined      | 表单项的slots                                                                                                                          |
+| formItemGiProps | NFormItemGi 的 props                                                                           | undefined      | 包裹表单控件的 NFormItemGi 的 props                                                                                                    |
+| formItemGiSlots | {label?:()=>VNodeChild,feedback?:()=>VNodeChild,prefix?:()=>VNodeChild,suffix?:()=>VNodeChild} | undefine       | 包裹表单控件的 NFormItemGi 的 slots, 除默认的 `label` 和 'feedback' 以外，额外添加了 `prefix` 和 `suffix` 以在表单组件前后添加别的内容 |
 
 #### Type <a id="form-list-item-render">FormListItemRender</a>
 
