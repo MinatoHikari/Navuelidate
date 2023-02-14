@@ -46,7 +46,10 @@ export default defineComponent({
         scope: {
             type: [String, Number, Symbol],
         },
-        modelValue: Object as PropType<Record<string, unknown>>,
+        modelValue: {
+            type: Object as PropType<Record<string, unknown>>,
+            required: true,
+        },
         rules: Object as PropType<ValidationArgs<Record<string, unknown>>>,
     },
     emits: ['update:modelValue'],
@@ -58,54 +61,47 @@ export default defineComponent({
                     FormListItem<Record<string, unknown>, keyof FormItems> | FormListItemRender
                 >,
         );
-        const setKeyVal = (
-            obj: Record<string, unknown>,
-            i: FormListItem<Record<string, unknown>, keyof FormItems>,
-        ) => {
-            if (typeof i.modelValue === 'string')
-                obj[i.modelValue] = p.modelValue ? p.modelValue[i.modelValue] : undefined;
-            else {
-                obj[i.modelValue[0]] = p.modelValue ? p.modelValue[i.modelValue[0]] : undefined;
-                obj[i.modelValue[1]] = p.modelValue ? p.modelValue[i.modelValue[1]] : undefined;
-            }
-        };
-        (list.value || []).forEach((item) => {
-            conditionFormLIstItemFn({
-                i: item,
-                isFormListItem: (i) => {
-                    setKeyVal(defaultVal, i);
-                },
-            });
-        });
-        const formData = ref<Record<string, unknown>>(defaultVal);
-        // <-- 监听表单值变化，向父组件传递变化
-        watch(
-            formData,
-            (val) => {
-                c.emit('update:modelValue', val);
-            },
-            {
-                deep: true,
-            },
-        );
-        watch(
-            () => p.modelValue,
-            (val) => {
-                if (val)
-                    (list.value || []).forEach((item) => {
-                        conditionFormLIstItemFn({
-                            i: item,
-                            isFormListItem: (i) => {
-                                setKeyVal(formData.value, i);
-                            },
-                        });
-                    });
-            },
-            {
-                deep: true,
-            },
-        );
-        // -->
+        // const setKeyVal = (
+        //     obj: Record<string, unknown>,
+        //     i: FormListItem<Record<string, unknown>, keyof FormItems>,
+        // ) => {
+        //     if (typeof i.modelValue === 'string')
+        //         obj[i.modelValue] = p.modelValue ? p.modelValue[i.modelValue] : undefined;
+        //     else {
+        //         obj[i.modelValue[0]] = p.modelValue ? p.modelValue[i.modelValue[0]] : undefined;
+        //         obj[i.modelValue[1]] = p.modelValue ? p.modelValue[i.modelValue[1]] : undefined;
+        //     }
+        // };
+        const formData = computed<Record<string, unknown>>(() => p.modelValue);
+        // const formData = ref<Record<string, unknown>>(defaultVal);
+        // const walkThrough = (target: Record<string, unknown>) => {
+        //     const keys = Reflect.ownKeys(p.modelValue);
+        //     for (let key of keys) {
+        //         if (typeof key === 'string') target[key] = p.modelValue[key];
+        //     }
+        // };
+
+        // walkThrough(defaultVal);
+
+        // watch(
+        //     formData,
+        //     (val) => {
+        //         c.emit('update:modelValue', val);
+        //     },
+        //     {
+        //         deep: true,
+        //     },
+        // );
+        // watch(
+        //     () => p.modelValue,
+        //     (val) => {
+        //         if (val) walkThrough(formData.value);
+        //     },
+        //     {
+        //         deep: true,
+        //     },
+        // );
+
         const v$ = useVuelidate(p.rules ?? {}, formData, {
             $scope: p.scope,
         });
