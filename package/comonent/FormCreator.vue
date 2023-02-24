@@ -211,6 +211,7 @@ export default defineComponent({
                 }
                 return res;
             }
+            return commonProps;
         };
 
         const getFeedBack = (i: FormListItem<Record<string, unknown>, keyof FormItems>) => {
