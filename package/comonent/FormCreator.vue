@@ -46,6 +46,14 @@ export default defineComponent({
         scope: {
             type: [String, Number, Symbol],
         },
+        disabled: {
+            type: Boolean,
+            default: false,
+        },
+        clearable: {
+            type: Boolean,
+            default: true,
+        },
         modelValue: {
             type: Object as PropType<Record<string, unknown>>,
             required: true,
@@ -182,14 +190,21 @@ export default defineComponent({
         };
 
         const getCommonProps = (i: FormListItem<Record<string, unknown>, keyof FormItems>) => {
+            const commonProps: { disabled: boolean; clearable?: boolean } = {
+                disabled: p.disabled,
+            };
+            if (i.formType !== FormType.CheckBoxGroup && i.formType !== FormType.RadioGroup)
+                commonProps.clearable = p.clearable;
             if (i.formType === FormType.Input && typeof i.modelValue !== 'string') {
                 return {
                     separator: '-',
+                    ...commonProps,
                 };
             }
             if (i.formType === FormType.DatePicker) {
                 const res: DatePickerProps = {
                     valueFormat: 'yyyy-MM-dd',
+                    ...commonProps,
                 };
                 if (typeof i.modelValue !== 'string') {
                     res.closeOnSelect = true;
