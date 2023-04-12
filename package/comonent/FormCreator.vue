@@ -237,18 +237,21 @@ export default defineComponent({
 
         const defaultRenderLabel = (label?: string, labelWidth?: number | string) => {
             if (labelWidth)
-                return h(
-                    NEllipsis,
-                    {
-                        style: labelWidth
-                            ? `max-width:${
-                                  typeof labelWidth === 'number' ? labelWidth + 'px' : labelWidth
-                              }`
-                            : undefined,
-                    },
-                    { default: () => label },
-                );
-            return label;
+                return () =>
+                    h(
+                        NEllipsis,
+                        {
+                            style: labelWidth
+                                ? `max-width:${
+                                      typeof labelWidth === 'number'
+                                          ? labelWidth + 'px'
+                                          : labelWidth
+                                  }`
+                                : undefined,
+                        },
+                        { default: () => label },
+                    );
+            return () => label;
         };
 
         return () => (
