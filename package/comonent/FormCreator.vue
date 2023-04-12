@@ -325,7 +325,7 @@ export default defineComponent({
                                         label:
                                             label ??
                                             defaultRenderLabel(
-                                                i.formItemGiProps?.label,
+                                                i.label ?? i.formItemGiProps?.label,
                                                 i.formItemGiProps?.labelWidth,
                                             ),
                                         feedback,
