@@ -2,7 +2,7 @@
 import { DefineComponent, PropType, toRefs, unref, VNode } from 'vue';
 import type { Validation, ValidationArgs } from '@vuelidate/core';
 import { useVuelidate } from '@vuelidate/core';
-import type { DatePickerProps } from 'naive-ui';
+import { DatePickerProps, NEllipsis } from 'naive-ui';
 import { NGrid, NFormItemGi, gridProps } from 'naive-ui';
 import { computed, defineComponent, ref, watch, h } from 'vue';
 import { FormItems, FormListItem, FormListItemRender, FormType } from '~/types';
@@ -235,12 +235,29 @@ export default defineComponent({
 
         const gridPropReactive = reactivePick(p, ...(gridPropKeys as (keyof typeof gridProps)[]));
 
+        const defaultRenderLabel = (label?: string, labelWidth?: number | string) => {
+            if (labelWidth)
+                return h(
+                    NEllipsis,
+                    {
+                        style: labelWidth
+                            ? `max-width:${
+                                  typeof labelWidth === 'number' ? labelWidth + 'px' : labelWidth
+                              }`
+                            : undefined,
+                    },
+                    { default: () => label },
+                );
+            return label;
+        };
+
         return () => (
             <NGrid {...gridPropReactive} {...c.attrs}>
                 {list.value?.map((listItem) => {
                     return conditionFormLIstItemFn({
                         i: listItem,
                         isRender: (i) => {
+                            const { prefix, suffix, label, feedback } = i.formItemGiSlots ?? {};
                             return (
                                 <NFormItemGi
                                     span={i.span ?? 1}
@@ -248,7 +265,18 @@ export default defineComponent({
                                     label-align="left"
                                     {...i.formItemGiProps}
                                 >
-                                    {i.render()}
+                                    {{
+                                        default: () => {
+                                            return i.render();
+                                        },
+                                        label:
+                                            label ??
+                                            defaultRenderLabel(
+                                                i.formItemGiProps?.label,
+                                                i.formItemGiProps?.labelWidth,
+                                            ),
+                                        feedback,
+                                    }}
                                 </NFormItemGi>
                             );
                         },
@@ -291,7 +319,12 @@ export default defineComponent({
                                                 </>
                                             );
                                         },
-                                        label,
+                                        label:
+                                            label ??
+                                            defaultRenderLabel(
+                                                i.formItemGiProps?.label,
+                                                i.formItemGiProps?.labelWidth,
+                                            ),
                                         feedback,
                                     }}
                                 </NFormItemGi>
