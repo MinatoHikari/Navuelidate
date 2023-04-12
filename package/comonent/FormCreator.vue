@@ -8,6 +8,7 @@ import { computed, defineComponent, ref, watch, h } from 'vue';
 import { FormItems, FormListItem, FormListItemRender, FormType } from '~/types';
 import { formItemMap, maybeNull } from '~/utils';
 import { reactivePick, toReactive } from '@vueuse/core';
+import { useThemeVars } from 'naive-ui';
 
 const gridPropKeys = Object.keys(gridProps);
 
@@ -39,6 +40,10 @@ export default defineComponent({
         cols: {
             type: gridProps.cols.type,
             default: 4,
+        },
+        ellipsisPadding: {
+            type: Number,
+            default: 12,
         },
         formList: Array as PropType<
             Array<FormListItem<never, keyof FormItems> | FormListItemRender>
@@ -244,8 +249,8 @@ export default defineComponent({
                             style: labelWidth
                                 ? `max-width:${
                                       typeof labelWidth === 'number'
-                                          ? labelWidth + 'px'
-                                          : labelWidth
+                                          ? labelWidth - p.ellipsisPadding + 'px'
+                                          : `calc(${labelWidth} - ${p.ellipsisPadding}px)`
                                   }`
                                 : undefined,
                         },
