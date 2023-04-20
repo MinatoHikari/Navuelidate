@@ -87,6 +87,10 @@ export const useFormCreator = <
         >,
     ): FormListItem<T, FormType.CheckBoxGroup>;
     function createFormListItem(
+        { key, formType }: { key: keyof T; formType: FormType.Tags },
+        config: Omit<FormListItem<T, FormType.Tags>, ExcludeKeys>,
+    ): FormListItem<T, FormType.Tags>;
+    function createFormListItem(
         { key, formType }: { key: keyof T; formType: FormType.Select },
         config: Omit<FormListItem<T, FormType.Select>, ExcludeKeys>,
     ): FormListItem<T, FormType.Select>;
