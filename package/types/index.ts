@@ -8,6 +8,7 @@ import {
     NTreeSelect,
     NFormItemGi,
     NCascader,
+    NDynamicTags,
 } from 'naive-ui';
 import { VNode, Slots, VNodeArrayChildren, Slot, VNodeChild } from 'vue';
 
@@ -20,6 +21,7 @@ export enum FormType {
     CheckBoxGroup = 'checkbox-group',
     DatePicker = 'date-picker',
     Cascader = 'cascader',
+    Tags = 'tags',
 }
 
 export interface FormItems {
@@ -31,6 +33,7 @@ export interface FormItems {
     [FormType.CheckBoxGroup]: typeof NCheckboxGroup;
     [FormType.DatePicker]: typeof NDatePicker;
     [FormType.Cascader]: typeof NCascader;
+    [FormType.Tags]: typeof NDynamicTags;
 }
 
 export type RawChildren = string | number | boolean | VNode | VNodeArrayChildren | (() => any);
