@@ -10,7 +10,7 @@ import {
     NCascader,
     NDynamicTags,
 } from 'naive-ui';
-import { VNode, Slots, VNodeArrayChildren, Slot, VNodeChild } from 'vue';
+import { VNode, VNodeArrayChildren, VNodeChild, VNodeProps } from 'vue';
 
 export enum FormType {
     Input = 'input',
@@ -38,7 +38,7 @@ export interface FormItems {
 
 export type RawChildren = string | number | boolean | VNode | VNodeArrayChildren | (() => any);
 export interface FormListItemCommonConfig {
-    formItemGiProps?: InstanceType<typeof NFormItemGi>['$props'];
+    formItemGiProps?: InstanceType<typeof NFormItemGi>['$props'] & VNodeProps & Record<string, any>;
     formItemGiSlots?: {
         feedback?: () => VNodeChild;
         label?: () => VNodeChild;
@@ -57,7 +57,7 @@ export interface FormListItem<
     T extends Record<string, unknown> = {},
     P extends keyof FormItems = FormType.Input,
 > extends FormListItemCommonConfig {
-    props?: InstanceType<FormItems[P]>['$props'];
+    props?: InstanceType<FormItems[P]>['$props'] & VNodeProps & Record<string, any>;
     label: string;
     formType: P;
     modelValue: keyof T | [keyof T, keyof T];

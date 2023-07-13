@@ -47,9 +47,9 @@ export default defineConfig({
         }),
 
         dts({
-            tsConfigFilePath: 'tsconfig.build.json',
+            tsconfigPath: 'tsconfig.build.json',
             insertTypesEntry: true,
-            outputDir: 'dist/types',
+            outDir: 'dist/types',
         }),
     ],
 });

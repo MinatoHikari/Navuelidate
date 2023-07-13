@@ -157,3 +157,11 @@ const formList = shallowRef([
 > ### ReturnType
 
 [`FormListItemRender`](#form-list-item-render)
+
+## 全局默认设置
+
+> ### createDefaultSettings
+
+- 参数:
+  - `formItemGiProps` 传递给 `formItemGi` 的 props
+  - `formItemProps` 传递给每个表单项的 props，函数，参数为 `FormType`

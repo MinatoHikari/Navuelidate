@@ -1,14 +1,15 @@
 import { CheckboxProps, NCheckbox, NRadio, RadioProps, FormItemGiProps } from 'naive-ui';
 import type { Validation, ValidationArgs } from '@vuelidate/core';
 import { useVuelidate } from '@vuelidate/core';
-import type { Ref, VNode } from 'vue';
+import type { Ref, VNode, VNodeProps } from 'vue';
 import { FormItems, FormListItem, FormListItemRender, FormType } from '~/types';
 import { ref, h } from 'vue';
 import { syncData } from '~/utils';
-import { resolveUnref } from '@vueuse/core';
+import { toValue } from '@vueuse/core';
 
 export type DefaultSettings = {
     formItemGiProps?: FormItemGiProps | (() => FormItemGiProps) | Ref<FormItemGiProps>;
+    formItemProps?: (formType: FormType) => VNodeProps & Record<string, any>;
 };
 
 let defaultSettings: DefaultSettings = {};
@@ -66,11 +67,12 @@ export const useFormCreator = <
 
     const resetForm = () => {
         const r = ref({ ...config.defaultData });
-        syncData(formData, r);
+        syncData(formData as Ref<Record<string, unknown>>, r);
         v$.value.$reset();
     };
 
-    const { formItemGiProps: defaultFormItemGiProps } = defaultSettings;
+    const { formItemGiProps: defaultFormItemGiProps, formItemProps: defaultFormItemProps } =
+        defaultSettings;
     const { globalFormItemGiProps } = config;
 
     function createFormListItem(
@@ -134,9 +136,20 @@ export const useFormCreator = <
     ): FormListItem<T, P> {
         if (globalFormItemGiProps) {
             config.formItemGiProps = {
-                ...resolveUnref(defaultFormItemGiProps),
-                ...resolveUnref(globalFormItemGiProps),
+                ...toValue(defaultFormItemGiProps),
+                ...toValue(globalFormItemGiProps),
                 ...config.formItemGiProps,
+            };
+        } else if (defaultFormItemProps) {
+            config.formItemGiProps = {
+                ...toValue(defaultFormItemGiProps),
+                ...config.formItemGiProps,
+            };
+        }
+        if (defaultFormItemProps) {
+            config.props = {
+                ...defaultFormItemProps(formType),
+                ...(config.props as Record<string, any>),
             };
         }
         return createFormListConfig<T, P>(key, {
@@ -151,8 +164,8 @@ export const useFormCreator = <
     ): FormListItemRender => {
         if (config && globalFormItemGiProps) {
             config.formItemGiProps = {
-                ...resolveUnref(defaultFormItemGiProps),
-                ...resolveUnref(globalFormItemGiProps),
+                ...toValue(defaultFormItemGiProps),
+                ...toValue(globalFormItemGiProps),
                 ...config.formItemGiProps,
             };
         }
