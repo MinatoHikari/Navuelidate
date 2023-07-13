@@ -58,6 +58,10 @@ export const useFormCreator = <
     scope: symbol | string | number;
     rules?: Ref<Vargs> | Vargs;
     globalFormItemGiProps?: FormItemGiProps | (() => FormItemGiProps) | Ref<FormItemGiProps>;
+    globalProps?:
+        | (VNodeProps & Record<string, any>)
+        | (() => VNodeProps & Record<string, any>)
+        | Ref<VNodeProps & Record<string, any>>;
 }) => {
     const formData = ref({ ...config.defaultData });
 
@@ -73,7 +77,7 @@ export const useFormCreator = <
 
     const { formItemGiProps: defaultFormItemGiProps, formItemProps: defaultFormItemProps } =
         defaultSettings;
-    const { globalFormItemGiProps } = config;
+    const { globalFormItemGiProps, globalProps } = config;
 
     function createFormListItem(
         { key, formType }: { key: keyof T; formType: FormType.RadioGroup },
@@ -146,7 +150,13 @@ export const useFormCreator = <
                 ...config.formItemGiProps,
             };
         }
-        if (defaultFormItemProps) {
+        if (globalProps) {
+            config.props = {
+                ...(defaultFormItemProps ? defaultFormItemProps(formType) : {}),
+                ...toValue(globalProps),
+                ...(config.props as Record<string, any>),
+            };
+        } else if (defaultFormItemProps) {
             config.props = {
                 ...defaultFormItemProps(formType),
                 ...(config.props as Record<string, any>),
@@ -166,6 +176,11 @@ export const useFormCreator = <
             config.formItemGiProps = {
                 ...toValue(defaultFormItemGiProps),
                 ...toValue(globalFormItemGiProps),
+                ...config.formItemGiProps,
+            };
+        } else if (config && defaultFormItemProps) {
+            config.formItemGiProps = {
+                ...toValue(defaultFormItemGiProps),
                 ...config.formItemGiProps,
             };
         }
