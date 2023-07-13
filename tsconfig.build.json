@@ -16,9 +16,7 @@
         "types": ["vite/client"],
         "paths": {
             "~/*": ["package/*"],
-            "treemate": ["node_modules/treemate/"],
-            "naive-ui": ["node_modules/naive-ui/"],
-            "vue": ["node_modules/vue/"]
+            "*": ["node_modules/*"]
         }
     },
     "exclude": ["dist", "node_modules"]
