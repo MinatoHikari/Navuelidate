@@ -50,6 +50,7 @@ export default defineConfig({
             tsconfigPath: 'tsconfig.build.json',
             insertTypesEntry: true,
             outDir: 'dist/types',
+            entryRoot: 'package',
         }),
     ],
 });
