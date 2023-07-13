@@ -58,10 +58,7 @@ export const useFormCreator = <
     scope: symbol | string | number;
     rules?: Ref<Vargs> | Vargs;
     globalFormItemGiProps?: FormItemGiProps | (() => FormItemGiProps) | Ref<FormItemGiProps>;
-    globalProps?:
-        | (VNodeProps & Record<string, any>)
-        | (() => VNodeProps & Record<string, any>)
-        | Ref<VNodeProps & Record<string, any>>;
+    globalProps?: (formType: FormType) => VNodeProps & Record<string, any>;
 }) => {
     const formData = ref({ ...config.defaultData });
 
@@ -153,7 +150,7 @@ export const useFormCreator = <
         if (globalProps) {
             config.props = {
                 ...(defaultFormItemProps ? defaultFormItemProps(formType) : {}),
-                ...toValue(globalProps),
+                ...globalProps(formType),
                 ...(config.props as Record<string, any>),
             };
         } else if (defaultFormItemProps) {
