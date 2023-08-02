@@ -108,13 +108,15 @@ export const useFormCreator = <
     function createFormListItem(
         { key, formType }: { key: keyof T; formType: FormType.DatePicker },
         config: Omit<FormListItem<T, FormType.DatePicker>, ExcludeKeys> & {
-            props?: { type?: 'date' | 'datetime' | 'month' | 'monthrange' | 'year' | 'quarter' };
+            props?: { type?: 'date' | 'datetime' | 'month' | 'year' | 'quarter' };
         },
     ): FormListItem<T, FormType.DatePicker>;
     function createFormListItem(
         { key, formType }: { key: [keyof T, keyof T]; formType: FormType.DatePicker },
         config: Omit<FormListItem<T, FormType.DatePicker>, ExcludeKeys> & {
-            props: { type: 'daterange' | 'datetimerange' };
+            props: {
+                type: 'daterange' | 'datetimerange' | 'monthrange' | 'quarterrange' | 'yearrange';
+            };
         },
     ): FormListItem<T, FormType.DatePicker>;
     function createFormListItem(
