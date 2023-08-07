@@ -11,8 +11,9 @@ import {
     NCascader,
     NDynamicTags,
 } from 'naive-ui';
-import { ref, Ref } from 'vue';
+import { ref, Ref, unref } from 'vue';
 import { reactivePick, syncRef } from '@vueuse/core';
+import { Validation } from '@vuelidate/core';
 
 export const formItemMap = new Map<keyof FormItems, FormItems[keyof FormItems]>([
     [FormType.Input, NInput],
@@ -43,4 +44,37 @@ export const syncData = <L extends Record<string, unknown>, R = L>(
         return;
     }
     syncRef(left, right, { direction: 'rtl', immediate: true })();
+};
+
+export const getValidationState = (validations: (Validation | undefined)[]) => {
+    let error: boolean | undefined;
+    let triggered = false;
+
+    for (let validation of validations) {
+        if (validation) {
+            if (validation.$error) error = true;
+            if (validation.$anyDirty) triggered = true;
+        }
+    }
+
+    if (triggered) {
+        if (!error) return 'success';
+        if (error) return 'error';
+    }
+
+    return undefined;
+};
+
+export const getFeedback = (validations?: (Validation | undefined)[]) => {
+    if (!validations) return '';
+    if (validations.length === 0) return '';
+    let errors: string[] = [];
+    for (let validation of validations) {
+        if (validation) {
+            const errors = validation.$errors ?? [];
+            errors.push(...errors);
+        }
+    }
+    if (errors.length === 0) return '';
+    return errors[0];
 };

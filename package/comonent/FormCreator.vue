@@ -8,6 +8,7 @@ import { computed, defineComponent, h } from 'vue';
 import { FormItems, FormListItem, FormListItemRender, FormType } from '~/types';
 import { formItemMap, maybeNull } from '~/utils';
 import { reactivePick } from '@vueuse/core';
+import { getValidationState } from '~/utils';
 
 const gridPropKeys = Object.keys(gridProps);
 
@@ -119,16 +120,17 @@ export default defineComponent({
         });
 
         const getValidateStatus = (validation: Validation | [Validation, Validation]) => {
-            let error: boolean | undefined;
-            if (validation && validation.length) {
-                const arr = validation as [Validation, Validation];
-                error = arr[0]?.$error && arr[1]?.$error;
-            } else {
-                error = validation ? (validation as Validation).$error : undefined;
-            }
-            if (!error) return 'success';
-            if (error) return 'error';
-            return undefined;
+            // let error: boolean | undefined;
+            // if (validation && validation.length) {
+            //     const arr = validation as [Validation, Validation];
+            //     error = arr[0]?.$error || arr[1]?.$error;
+            // } else {
+            //     error = validation ? (validation as Validation).$error : undefined;
+            // }
+            // if (!error) return 'success';
+            // if (error) return 'error';
+            // return undefined;
+            return getValidationState(Array.isArray(validation) ? validation : [validation]);
         };
 
         const getArrVal = (i: FormListItem<Record<string, unknown>, keyof FormItems>) => {
