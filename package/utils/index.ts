@@ -71,8 +71,8 @@ export const getFeedback = (validations?: (Validation | undefined)[]) => {
     let errors: string[] = [];
     for (let validation of validations) {
         if (validation) {
-            const errors = validation.$errors.map((i) => unref(i)) ?? [];
-            errors.push(...errors);
+            const errorStrs = validation.$errors.map((i) => unref(i.$message)) ?? [];
+            errors.push(...errorStrs);
         }
     }
     if (errors.length === 0) return '';

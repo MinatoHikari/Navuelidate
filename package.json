@@ -1,6 +1,6 @@
 {
     "name": "navuelidate",
-    "version": "0.9.2",
+    "version": "0.9.3",
     "description": "a lib for create form and validate easier with naveui/vuelidate/vueuse",
     "main": "dist/index.umd.js",
     "module": "dist/index.mjs",
