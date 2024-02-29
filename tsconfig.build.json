@@ -16,8 +16,12 @@
         "types": ["vite/client"],
         "paths": {
             "~/*": ["package/*"],
-            "*": ["node_modules/*"]
-        }
+            // "*": ["node_modules/*"]
+            "treemate": ["node_modules/treemate"],
+            "vueuc": ["node_modules/vueuc"]
+        },
+        "declaration": false,
+        "declarationMap": false
     },
     "exclude": ["dist", "node_modules"]
 }
