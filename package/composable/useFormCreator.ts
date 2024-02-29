@@ -2,7 +2,7 @@ import { CheckboxProps, NCheckbox, NRadio, RadioProps, FormItemGiProps } from 'n
 import type { Validation, ValidationArgs } from '@vuelidate/core';
 import { useVuelidate } from '@vuelidate/core';
 import type { Ref, VNode, VNodeProps } from 'vue';
-import { FormItems, FormListItem, FormListItemRender, FormType } from '~/types';
+import { ChildFormType, FormItems, FormListItem, FormListItemRender, FormType } from '~/types';
 import { ref, h } from 'vue';
 import { syncData } from '~/utils';
 import { toValue } from '@vueuse/core';
@@ -110,7 +110,7 @@ export const useFormCreator = <
         config: Omit<FormListItem<T, FormType.DatePicker>, ExcludeKeys> & {
             props?: { type?: 'date' | 'datetime' | 'month' | 'year' | 'quarter' };
         },
-    ): FormListItem<T, FormType.DatePicker>;
+    ): FormListItem<T, FormType.DatePicker, ChildFormType.DatePicker>;
     function createFormListItem(
         { key, formType }: { key: [keyof T, keyof T]; formType: FormType.DatePicker },
         config: Omit<FormListItem<T, FormType.DatePicker>, ExcludeKeys> & {
@@ -118,7 +118,7 @@ export const useFormCreator = <
                 type: 'daterange' | 'datetimerange' | 'monthrange' | 'quarterrange' | 'yearrange';
             };
         },
-    ): FormListItem<T, FormType.DatePicker>;
+    ): FormListItem<T, FormType.DatePicker, ChildFormType.RangePicker>;
     function createFormListItem(
         { key, formType }: { key: keyof T; formType: FormType.Input },
         config: Omit<FormListItem<T>, ExcludeKeys>,

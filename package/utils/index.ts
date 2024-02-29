@@ -40,10 +40,20 @@ export const syncData = <L extends Record<string, unknown>, R = L>(
     if (!right.value) return;
     if (config && !config.mergePropsNotInLeft) {
         const toMerged = reactivePick(right.value, ...(keys as (keyof R)[]));
-        syncRef(left, ref(toMerged), { direction: 'rtl', immediate: true })();
+        syncRef(
+            left as Ref<Record<string, unknown>>,
+            ref(toMerged) as Ref<Record<string, unknown>>,
+            {
+                direction: 'rtl',
+                immediate: true,
+            },
+        );
         return;
     }
-    syncRef(left, right, { direction: 'rtl', immediate: true })();
+    syncRef(left as Ref<Record<string, unknown>>, right as Ref<Record<string, unknown>>, {
+        direction: 'rtl',
+        immediate: true,
+    });
 };
 
 export const getValidationState = (validations: (Validation | undefined)[]) => {

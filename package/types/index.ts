@@ -24,6 +24,12 @@ export enum FormType {
     Tags = 'tags',
 }
 
+export enum ChildFormType {
+    Default = 'default',
+    RangePicker = 'rangepicker',
+    DatePicker = 'datepicker',
+}
+
 export interface FormItems {
     [FormType.Input]: typeof NInput;
     [FormType.Select]: typeof NSelect;
@@ -56,6 +62,7 @@ export type RawSlots = {
 export interface FormListItem<
     T extends Record<string, unknown> = {},
     P extends keyof FormItems = FormType.Input,
+    TT extends ChildFormType = ChildFormType.Default,
 > extends FormListItemCommonConfig {
     props?: InstanceType<FormItems[P]>['$props'] & VNodeProps & Record<string, any>;
     label: string;
