@@ -38,9 +38,7 @@ export default defineConfig({
         },
     },
     plugins: [
-        Vue({
-            reactivityTransform: true,
-        }),
+        Vue({}),
 
         vueJsx({
             // options are passed on to @vue/babel-plugin-jsx
@@ -50,7 +48,7 @@ export default defineConfig({
             tsconfigPath: 'tsconfig.build.json',
             insertTypesEntry: true,
             outDir: 'dist/types',
-            entryRoot: 'package',
+            entryRoot: 'package/index.ts',
         }),
     ],
 });
