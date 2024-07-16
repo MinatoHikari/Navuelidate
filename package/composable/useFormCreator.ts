@@ -7,6 +7,19 @@ import { ref, h } from 'vue';
 import { syncData } from '~/utils';
 import { toValue } from '@vueuse/core';
 
+export type DatePickerType =
+    | 'date'
+    | 'datetime'
+    | 'daterange'
+    | 'datetimerange'
+    | 'month'
+    | 'year'
+    | 'quarter'
+    | 'monthrange'
+    | 'quarterrange'
+    | 'yearrange'
+    | 'week';
+
 export type DefaultSettings = {
     formItemGiProps?: FormItemGiProps | (() => FormItemGiProps) | Ref<FormItemGiProps>;
     formItemProps?: (formType: FormType) => VNodeProps & Record<string, any>;
@@ -108,14 +121,22 @@ export const useFormCreator = <
     function createFormListItem(
         { key, formType }: { key: keyof T; formType: FormType.DatePicker },
         config: Omit<FormListItem<T, FormType.DatePicker>, ExcludeKeys> & {
-            props?: { type?: 'date' | 'datetime' | 'month' | 'year' | 'quarter' | 'week' };
+            props?: {
+                type?: Extract<
+                    DatePickerType,
+                    'date' | 'datetime' | 'month' | 'year' | 'quarter' | 'week'
+                >;
+            };
         },
     ): FormListItem<T, FormType.DatePicker, ChildFormType.DatePicker>;
     function createFormListItem(
         { key, formType }: { key: [keyof T, keyof T]; formType: FormType.DatePicker },
         config: Omit<FormListItem<T, FormType.DatePicker>, ExcludeKeys> & {
             props: {
-                type: 'daterange' | 'datetimerange' | 'monthrange' | 'quarterrange' | 'yearrange';
+                type: Extract<
+                    DatePickerType,
+                    'daterange' | 'datetimerange' | 'monthrange' | 'quarterrange' | 'yearrange'
+                >;
             };
         },
     ): FormListItem<T, FormType.DatePicker, ChildFormType.RangePicker>;
@@ -170,7 +191,12 @@ export const useFormCreator = <
     const createFormListDatePickerItem = (
         { key }: { key: keyof T },
         config: Omit<FormListItem<T, FormType.DatePicker>, ExcludeKeys> & {
-            props?: { type?: 'date' | 'datetime' | 'month' | 'year' | 'quarter' | 'week' };
+            props?: {
+                type?: Extract<
+                    DatePickerType,
+                    'date' | 'datetime' | 'month' | 'year' | 'quarter' | 'week'
+                >;
+            };
         },
     ): FormListItem<T, FormType.DatePicker> => {
         const formType = FormType.DatePicker;
@@ -208,7 +234,10 @@ export const useFormCreator = <
         { key }: { key: keyof T },
         config: Omit<FormListItem<T, FormType.DatePicker>, ExcludeKeys> & {
             props?: {
-                type?: 'daterange' | 'datetimerange' | 'monthrange' | 'quarterrange' | 'yearrange';
+                type?: Extract<
+                    DatePickerType,
+                    'daterange' | 'datetimerange' | 'monthrange' | 'quarterrange' | 'yearrange'
+                >;
             };
         },
     ): FormListItem<T, FormType.DatePicker> => {
