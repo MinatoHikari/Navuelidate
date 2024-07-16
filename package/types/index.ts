@@ -74,3 +74,16 @@ export interface FormListItem<
 export interface FormListItemRender extends FormListItemCommonConfig {
     render: () => VNode;
 }
+
+export type DatePickerType =
+    | 'date'
+    | 'datetime'
+    | 'daterange'
+    | 'datetimerange'
+    | 'month'
+    | 'year'
+    | 'quarter'
+    | 'monthrange'
+    | 'quarterrange'
+    | 'yearrange'
+    | 'week';

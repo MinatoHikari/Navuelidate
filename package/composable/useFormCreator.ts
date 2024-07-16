@@ -2,23 +2,17 @@ import { CheckboxProps, NCheckbox, NRadio, RadioProps, FormItemGiProps } from 'n
 import type { Validation, ValidationArgs } from '@vuelidate/core';
 import { useVuelidate } from '@vuelidate/core';
 import type { Ref, VNode, VNodeProps } from 'vue';
-import { ChildFormType, FormItems, FormListItem, FormListItemRender, FormType } from '~/types';
+import {
+    ChildFormType,
+    DatePickerType,
+    FormItems,
+    FormListItem,
+    FormListItemRender,
+    FormType,
+} from '~/types';
 import { ref, h } from 'vue';
 import { syncData } from '~/utils';
 import { toValue } from '@vueuse/core';
-
-export type DatePickerType =
-    | 'date'
-    | 'datetime'
-    | 'daterange'
-    | 'datetimerange'
-    | 'month'
-    | 'year'
-    | 'quarter'
-    | 'monthrange'
-    | 'quarterrange'
-    | 'yearrange'
-    | 'week';
 
 export type DefaultSettings = {
     formItemGiProps?: FormItemGiProps | (() => FormItemGiProps) | Ref<FormItemGiProps>;
