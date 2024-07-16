@@ -108,7 +108,7 @@ export const useFormCreator = <
     function createFormListItem(
         { key, formType }: { key: keyof T; formType: FormType.DatePicker },
         config: Omit<FormListItem<T, FormType.DatePicker>, ExcludeKeys> & {
-            props?: { type?: 'date' | 'datetime' | 'month' | 'year' | 'quarter' };
+            props?: { type?: 'date' | 'datetime' | 'month' | 'year' | 'quarter' | 'week' };
         },
     ): FormListItem<T, FormType.DatePicker, ChildFormType.DatePicker>;
     function createFormListItem(
@@ -167,6 +167,82 @@ export const useFormCreator = <
         });
     }
 
+    const createFormListDatePickerItem = (
+        { key }: { key: keyof T },
+        config: Omit<FormListItem<T, FormType.DatePicker>, ExcludeKeys> & {
+            props?: { type?: 'date' | 'datetime' | 'month' | 'year' | 'quarter' | 'week' };
+        },
+    ): FormListItem<T, FormType.DatePicker> => {
+        const formType = FormType.DatePicker;
+        if (globalFormItemGiProps) {
+            config.formItemGiProps = {
+                ...toValue(defaultFormItemGiProps),
+                ...toValue(globalFormItemGiProps),
+                ...config.formItemGiProps,
+            };
+        } else if (defaultFormItemProps) {
+            config.formItemGiProps = {
+                ...toValue(defaultFormItemGiProps),
+                ...config.formItemGiProps,
+            };
+        }
+        if (globalProps) {
+            config.props = {
+                ...(defaultFormItemProps ? defaultFormItemProps(formType) : {}),
+                ...globalProps(formType),
+                ...(config.props as Record<string, any>),
+            };
+        } else if (defaultFormItemProps) {
+            config.props = {
+                ...defaultFormItemProps(formType),
+                ...(config.props as Record<string, any>),
+            };
+        }
+        return createFormListConfig<T, FormType.DatePicker>(key, {
+            ...config,
+            formType,
+        });
+    };
+
+    const createFormListDateRangePickerItem = (
+        { key }: { key: keyof T },
+        config: Omit<FormListItem<T, FormType.DatePicker>, ExcludeKeys> & {
+            props?: {
+                type?: 'daterange' | 'datetimerange' | 'monthrange' | 'quarterrange' | 'yearrange';
+            };
+        },
+    ): FormListItem<T, FormType.DatePicker> => {
+        const formType = FormType.DatePicker;
+        if (globalFormItemGiProps) {
+            config.formItemGiProps = {
+                ...toValue(defaultFormItemGiProps),
+                ...toValue(globalFormItemGiProps),
+                ...config.formItemGiProps,
+            };
+        } else if (defaultFormItemProps) {
+            config.formItemGiProps = {
+                ...toValue(defaultFormItemGiProps),
+                ...config.formItemGiProps,
+            };
+        }
+        if (globalProps) {
+            config.props = {
+                ...(defaultFormItemProps ? defaultFormItemProps(formType) : {}),
+                ...globalProps(formType),
+                ...(config.props as Record<string, any>),
+            };
+        } else if (defaultFormItemProps) {
+            config.props = {
+                ...defaultFormItemProps(formType),
+                ...(config.props as Record<string, any>),
+            };
+        }
+        return createFormListConfig<T, FormType.DatePicker>(key, {
+            ...config,
+            formType,
+        });
+    };
+
     const renderFormListItem = (
         render: () => VNode,
         config?: Omit<FormListItemRender, 'render'>,
@@ -191,6 +267,8 @@ export const useFormCreator = <
 
     return {
         createFormListItem,
+        createFormListDatePickerItem,
+        createFormListDateRangePickerItem,
         renderFormListItem,
         v$,
         formData,
