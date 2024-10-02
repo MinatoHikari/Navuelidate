@@ -18,7 +18,8 @@
             "~/*": ["package/*"],
             // "*": ["node_modules/*"]
             "treemate": ["node_modules/treemate"],
-            "vueuc": ["node_modules/vueuc"]
+            "vueuc": ["node_modules/vueuc"],
+            // "@vue/shared": ["node_modules/@vue/shared"],
         },
         "declaration": false,
         "declarationMap": false

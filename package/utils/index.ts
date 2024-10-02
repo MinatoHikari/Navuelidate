@@ -10,6 +10,7 @@ import {
     NTreeSelect,
     NCascader,
     NDynamicTags,
+    NSwitch,
 } from 'naive-ui';
 import { ref, Ref, unref } from 'vue';
 import { reactivePick, syncRef } from '@vueuse/core';
@@ -25,6 +26,7 @@ export const formItemMap = new Map<keyof FormItems, FormItems[keyof FormItems]>(
     [FormType.DatePicker, NDatePicker],
     [FormType.Cascader, NCascader],
     [FormType.Tags, NDynamicTags],
+    [FormType.Switch, NSwitch],
 ]);
 
 export const maybeNull = <T>(val?: T) => {

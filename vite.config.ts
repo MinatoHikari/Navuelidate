@@ -47,7 +47,6 @@ export default defineConfig({
         dts({
             tsconfigPath: 'tsconfig.build.json',
             insertTypesEntry: true,
-            exclude: ['node_modules/**'],
             outDir: 'dist/types',
             entryRoot: 'package',
         }),
