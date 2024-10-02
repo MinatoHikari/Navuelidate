@@ -9,6 +9,7 @@ import {
     NFormItemGi,
     NCascader,
     NDynamicTags,
+    NSwitch
 } from 'naive-ui';
 import { VNode, VNodeArrayChildren, VNodeChild, VNodeProps } from 'vue';
 
@@ -22,6 +23,7 @@ export enum FormType {
     DatePicker = 'date-picker',
     Cascader = 'cascader',
     Tags = 'tags',
+    Switch = 'switch',
 }
 
 export enum ChildFormType {
@@ -40,6 +42,7 @@ export interface FormItems {
     [FormType.DatePicker]: typeof NDatePicker;
     [FormType.Cascader]: typeof NCascader;
     [FormType.Tags]: typeof NDynamicTags;
+    [FormType.Switch]: typeof NSwitch;
 }
 
 export type RawChildren = string | number | boolean | VNode | VNodeArrayChildren | (() => any);

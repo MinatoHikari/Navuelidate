@@ -105,6 +105,10 @@ export const useFormCreator = <
         config: Omit<FormListItem<T, FormType.Select>, ExcludeKeys>,
     ): FormListItem<T, FormType.Select>;
     function createFormListItem(
+        { key, formType }: { key: keyof T; formType: FormType.Switch },
+        config: Omit<FormListItem<T, FormType.Switch>, ExcludeKeys>,
+    ): FormListItem<T, FormType.Switch>;
+    function createFormListItem(
         { key, formType }: { key: keyof T; formType: FormType.Cascader },
         config: Omit<FormListItem<T, FormType.Cascader>, ExcludeKeys>,
     ): FormListItem<T, FormType.Cascader>;
